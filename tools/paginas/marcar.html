@@ -1,0 +1,70 @@
+<!--titulo: Marcar | Fabi Gomez · Alma Beauty-->
+<!--desc: Marque a sua avaliação, peça informações sobre formações ou marque uma sessão de terapia com a Fabi Gomez, em Sesimbra. A mensagem segue pelo WhatsApp.-->
+<!--menu: -->
+<section class="topo">
+  <div class="wrap">
+    <div class="cab">
+      <!--anel-->
+      <p class="rot" data-r>Marcar</p>
+      <h1 data-r>Fale com a Fabi</h1>
+      <p class="lead" data-r>Preencha o que souber. A mensagem fica pronta e segue pelo WhatsApp, para a Fabi responder com as datas disponíveis.</p>
+    </div>
+  </div>
+</section>
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <form class="form" data-marcar novalidate data-r>
+      <fieldset class="campo">
+        <legend>O que procura</legend>
+        <div class="opcoes">
+          <label><input type="radio" name="tipo" value="procedimento" checked><span>Procedimento</span></label>
+          <label><input type="radio" name="tipo" value="formacao"><span>Formação</span></label>
+          <label><input type="radio" name="tipo" value="terapia"><span>Terapia</span></label>
+        </div>
+      </fieldset>
+      <div class="campo">
+        <label for="servico">Serviço</label>
+        <select id="servico" name="servico">
+          <optgroup label="Procedimentos" data-g="proc">
+            <option>Avaliação (ainda não sei)</option>
+            <option>Micropigmentação de sobrancelhas</option>
+            <option>Shadow brows</option>
+            <option>Design de sobrancelhas com henna</option>
+            <option>Brow lamination</option>
+            <option>Reativa Brows</option>
+            <option>Micropigmentação labial</option>
+            <option>Hidra Lips</option>
+            <option>Neutralização labial</option>
+            <option>Rímel Effect (pestanas)</option>
+            <option>Lifting de pestanas</option>
+            <option>Eyeliner definitivo</option>
+            <option>Alquimia do Glow</option>
+            <option>Peeling Hollywood</option>
+            <option>Remoção de micropigmentação</option>
+            <option>Unhas em gel</option>
+          </optgroup>
+          <optgroup label="Formações" data-g="form">
+            <option>Alma Essence Brows</option>
+            <option>Microblading e fio a fio</option>
+            <option>Rímel Effect</option>
+            <option>Unhas em gel</option>
+            <option>Quero viver da beleza (iniciante)</option>
+            <option>Sou da beleza e quero faturar mais</option>
+          </optgroup>
+          <optgroup label="Terapias" data-g="ter">
+            <option>Mesa Quântica</option>
+            <option>Mentoria de Transformação Pessoal</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="duas">
+        <div class="campo"><label for="nome">Nome</label><input id="nome" name="nome" autocomplete="given-name" placeholder="Como se chama?"></div>
+        <div class="campo"><label for="quando">Preferência de dia</label><select id="quando" name="quando"><option value="">Qualquer dia</option><option>Dias de semana, manhã</option><option>Dias de semana, tarde</option><option>Sábado</option></select></div>
+      </div>
+      <div class="campo"><label for="antes">Já tem micropigmentação na zona?</label><select id="antes" name="antes"><option>Não</option><option>Sim, recente</option><option>Sim, antiga</option><option>Não sei</option></select></div>
+      <div class="campo"><label for="msg">Mensagem</label><textarea id="msg" name="msg" placeholder="Conte o que procura, se quiser."></textarea></div>
+      <div class="campo"><span class="rot" style="color:var(--suave)">Mensagem que vai seguir</span><div class="previa" data-previa aria-live="polite"></div></div>
+      <button class="btn" type="submit"><span>Enviar pelo WhatsApp</span><!--seta--></button>
+    </form>
+  </div>
+</section>
