@@ -6,7 +6,8 @@ Prévia: https://azeugral.github.io/fabi-gomez/ (com `noindex` até haver domín
 
 ## Identidade (v1, 14/10/2026)
 
-- **Logo:** é o monograma FG oficial dela, com o anel "Fabianna Gomez | Terapia & Estética". Foi recortado da foto 097 (`../_ref/ig/097.jpg`) e passado a fundo transparente por `tools/processar.py`, que gera as versões ouro, osso e claro. O anel com texto perde nitidez acima de uns 320 px. Pedir o vetor original e trocar.
+- **Logo:** é o oficial, em ouro texturizado, que ela enviou em 15/10/2026 como PNG transparente (`../_ref/logo-oficial.webp`). O `tools/processar.py` gera o logo completo (anel + monograma) e o monograma sozinho, separado como o maior componente conectado.
+- **Favicon:** o monograma em ouro, sem fundo. O ícone da Apple (180 px) leva fundo marfim, porque o iOS pinta de preto o que fica transparente.
 - **Cores:** marfim `#f5efe7`, linho `#ece3d6`, cacau `#231813` e ouro `#a8813a` (claro `#d9bf86`). O ouro é o do monograma e o cacau é o 🤎 que ela usa nas legendas.
 - **Fontes:** Bodoni Moda nos títulos (didone, como o monograma) e IBM Plex Sans no texto.
 - **Movimento:** curva `cubic-bezier(.16,.84,.32,1)` em tudo:
@@ -67,7 +68,6 @@ Os itens pendentes aparecem no site como "✦ a preencher", com sublinhado trace
   - o Seminário PMU Portugal (Porto, 18 e 19/10/2026) passa a evento passado depois dessa data;
   - o Eurochampions de Roma 2027 está como "presença confirmada".
 - [ ] **Nome:** ela assina "Fabi Gomez", "Fabianna Gomez" no logo e "Fabiana Gomes" nos eventos. O site usa **Fabi Gomez** e a marca **Alma Beauty**.
-- [ ] **Logo em vetor.**
 - [ ] **Domínio:** quando houver, trocar `BASE` em `tools/montar_paginas.py`, tirar o `noindex` e trocar o `robots.txt`.
 
 Site por [L R G Z](https://lrgz.com.br).

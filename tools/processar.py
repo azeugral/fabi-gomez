@@ -81,58 +81,50 @@ def salvar(im, pasta, nome, larguras, q=80):
 
 
 def logo():
-    """Anel + monograma FG. Fundo é um cinza-claro em degradê: o alfa vem da falta de azul em relação ao fundo."""
-    src = abrir(97).crop((455, 285, 865, 670))
-    src = src.resize((src.width * 3, src.height * 3), Image.LANCZOS)
-    w, h = src.size
-    px = src.load()
-    a = Image.new('L', (w, h))
-    pa = a.load()
-    for y in range(h):
-        bg = sum(px[x, y][2] for x in (2, 3, 4, w - 3, w - 4)) / 5
-        for x in range(w):
-            r, g, b = px[x, y]
-            v = (bg - b) / max(bg - 70, 1)
-            pa[x, y] = max(0, min(255, int((v - .06) * 1.25 * 255)))
-    a = a.filter(ImageFilter.GaussianBlur(.6))
-    box = a.point(lambda v: 255 if v > 40 else 0).getbbox()
-    a = a.crop(box)
-    pad = 12
-    full = Image.new('L', (a.width + pad * 2, a.height + pad * 2))
-    full.paste(a, (pad, pad))
-    for nome, cor in (('logo-ouro', OURO), ('logo-osso', OSSO), ('logo-claro', (217, 191, 134))):
-        im = Image.new('RGBA', full.size, cor + (0,))
-        im.putalpha(full)
-        im.save(os.path.join(IMG, nome + '.png'))
+    """Logo oficial dela (../_ref/logo-oficial.webp, PNG transparente enviado em 15/10/2026): anel + monograma FG em ouro texturizado.
+    O monograma sozinho sai do maior componente conectado, para não levar letras do anel."""
+    import numpy as np
+    from scipy import ndimage
+    src = Image.open(os.path.join(os.path.dirname(SITE), '_ref', 'logo-oficial.webp')).convert('RGBA')
+    arr = np.array(src)
+    arr[..., 3][arr[..., 3] < 8] = 0  # resto de recorte quase invisível
+    src = Image.fromarray(arr)
+    src = src.crop(src.getchannel('A').getbbox())
+    for nome in ('logo-ouro', 'logo-claro'):
+        src.save(os.path.join(IMG, nome + '.png'))
         for s in (160, 320, 640):
-            c = im.resize((s, round(full.height * s / full.width)), Image.LANCZOS)
-            c.save(os.path.join(IMG, f'{nome}-{s}.webp'), 'WEBP', quality=90, method=6)
-    # monograma sozinho (miolo do anel) para favicon
-    W, H = full.size
-    m = full.crop((int(W * .22), int(H * .17), int(W * .78), int(H * .83)))
-    mb = m.point(lambda v: 255 if v > 60 else 0).getbbox()
-    m = m.crop(mb)
-    for nome, cor in (('mono-ouro', OURO), ('mono-osso', OSSO)):
-        im = Image.new('RGBA', m.size, cor + (0,))
-        im.putalpha(m)
+            src.resize((s, round(src.height * s / src.width)), Image.LANCZOS).save(os.path.join(IMG, f'{nome}-{s}.webp'), 'WEBP', quality=92, method=6)
+    a = np.array(src.getchannel('A'))
+    lab, n = ndimage.label(a > 40)
+    tam = ndimage.sum(np.ones_like(a), lab, range(1, n + 1))
+    maior = int(np.argmax(tam)) + 1
+    masc = ndimage.binary_dilation(lab == maior, iterations=4)
+    m = np.array(src)
+    m[..., 3] = np.where(masc, m[..., 3], 0)
+    mono = Image.fromarray(m)
+    mono = mono.crop(mono.getchannel('A').getbbox())
+    alfa = mono.getchannel('A')
+    for nome, im in (('mono-ouro', mono), ('mono-osso', Image.merge('RGBA', [Image.new('L', mono.size, c) for c in OSSO] + [alfa]))):
         for s in (96, 192):
-            im.resize((round(m.width * s / m.height), s), Image.LANCZOS).save(os.path.join(IMG, f'{nome}-{s}.webp'), 'WEBP', quality=92, method=6)
-    print('mono', m.size)
-    return m
+            im.resize((round(mono.width * s / mono.height), s), Image.LANCZOS).save(os.path.join(IMG, f'{nome}-{s}.webp'), 'WEBP', quality=92, method=6)
+    print('logo', src.size, 'mono', mono.size)
+    return mono
 
 
 def icones(mono):
-    S = 512
-    fundo = Image.new('RGBA', (S, S), (35, 24, 19, 255))
-    s = int(S * .62)
-    m = mono.resize((round(mono.width * s / mono.height), s), Image.LANCZOS)
-    cor = Image.new('RGBA', m.size, (217, 191, 134, 0))
-    cor.putalpha(m)
-    fundo.alpha_composite(cor, ((S - m.width) // 2, (S - m.height) // 2))
-    fundo.save(os.path.join(IMG, 'icone-512.png'))
-    fundo.resize((180, 180), Image.LANCZOS).save(os.path.join(IMG, 'icone-180.png'))
-    fundo.resize((32, 32), Image.LANCZOS).save(os.path.join(SITE, 'favicon-32.png'))
-    fundo.save(os.path.join(SITE, 'favicon.ico'), sizes=[(16, 16), (32, 32), (48, 48)])
+    """Favicon sem fundo: monograma em ouro centrado num quadrado transparente.
+    O apple-touch-icon leva fundo marfim, porque o iOS pinta de preto o que for transparente."""
+    def quadrado(S, margem, fundo=None):
+        q = Image.new('RGBA', (S, S), fundo or (0, 0, 0, 0))
+        h = round(S * (1 - 2 * margem))
+        m = mono.resize((round(mono.width * h / mono.height), h), Image.LANCZOS)
+        q.alpha_composite(m, ((S - m.width) // 2, (S - m.height) // 2))
+        return q
+    quadrado(512, .06).save(os.path.join(IMG, 'icone-512.png'))
+    quadrado(180, .14, (245, 239, 231, 255)).save(os.path.join(IMG, 'icone-180.png'))
+    quadrado(32, .02).save(os.path.join(SITE, 'favicon-32.png'))
+    grande = quadrado(256, .02)
+    grande.save(os.path.join(SITE, 'favicon.ico'), sizes=[(16, 16), (32, 32), (48, 48), (64, 64)])
 
 
 def og():

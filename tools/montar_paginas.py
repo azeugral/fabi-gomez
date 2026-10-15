@@ -6,7 +6,7 @@ Cada página começa com três linhas de cabeçalho:
 Marcadores no corpo: <!--seta--> e <!--anel-->. Troque V para furar o cache de CSS/JS."""
 import os, re, glob
 
-V = '2'
+V = '3'
 AQUI = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(AQUI)
 BASE = 'https://azeugral.github.io/fabi-gomez/'  # CONFIRMAR: trocar quando houver domínio
@@ -64,7 +64,7 @@ FOOT = '''</main>
 <footer class="rodape">
   <div class="wrap">
     <div class="rodape-topo">
-      <img src="assets/img/logo-claro-320.webp" srcset="assets/img/logo-claro-320.webp 1x, assets/img/logo-claro-640.webp 2x" alt="Fabianna Gomez, Terapia &amp; Estética" width="320" height="315" loading="lazy">
+      <img src="assets/img/logo-claro-320.webp" srcset="assets/img/logo-claro-320.webp 1x, assets/img/logo-claro-640.webp 2x" alt="Fabianna Gomez, Terapia &amp; Estética" width="320" height="321" loading="lazy">
       <p>Micropigmentação, sobrancelhas, olhar e pele. Formadora na área da beleza em Sesimbra, Portugal.</p>
     </div>
     <div class="colunas">
